@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using NUnit.Framework.Interfaces;
 using IFixtureBuilder = NUnit.Framework.Interfaces.IFixtureBuilder;
 using ITestFixtureData = NUnit.Framework.Interfaces.ITestFixtureData;
 using ITypeInfo = NUnit.Framework.Interfaces.ITypeInfo;
@@ -12,7 +14,7 @@ using TestSuite = NUnit.Framework.Internal.TestSuite;
 namespace Tests.TestUtilities
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-    public abstract class AbstractTheoryAttribute : NUnitAttribute, IFixtureBuilder
+    public abstract class CustomFixtureSourceAttribute : NUnitAttribute, IFixtureBuilder
     {
         private readonly NUnitTestFixtureBuilder builder = new NUnitTestFixtureBuilder();
 
@@ -27,7 +29,7 @@ namespace Tests.TestUtilities
         public IEnumerable<TestSuite> BuildFrom(ITypeInfo typeInfo)
         {
             foreach (ITestFixtureData fixtureParameters in this.RetrieveParameters())
-                yield return this.builder.BuildFrom(typeInfo, fixtureParameters);
+                yield return this.builder.BuildFrom(typeInfo, new PreFilter(), fixtureParameters);
         }
 
         private IEnumerable<ITestFixtureData> RetrieveParameters()
@@ -53,6 +55,19 @@ namespace Tests.TestUtilities
                 {
                     new TestFixtureParameters(ex)
                 };
+            }
+        }
+
+        private class PreFilter : IPreFilter
+        {
+            public bool IsMatch(Type type)
+            {
+                return true;
+            }
+
+            public bool IsMatch(Type type, MethodInfo method)
+            {
+                return true;
             }
         }
     }

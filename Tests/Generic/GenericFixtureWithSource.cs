@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using System.Threading;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using Tests.TestUtilities;
 
 namespace Tests.Generic
 {
-    [GenericFixtureSource]
-    public class GenericWithFixtureSource<T>
+    [TestFixtureSource(typeof(GenericFixtureSourceHolder), nameof(GenericFixtureSourceHolder.Examples))]
+    public class GenericFixtureWithSource<T>
     {
         private readonly T myDependency;
 
-        public GenericWithFixtureSource(T dependency)
+        public GenericFixtureWithSource(T dependency)
         {
             this.myDependency = dependency;
         }
@@ -19,14 +18,13 @@ namespace Tests.Generic
         [Test]
         public void Foo()
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(1000);
         }
     }
 
-
-    public class GenericFixtureSourceAttribute : AbstractTheoryAttribute
+    public static class GenericFixtureSourceHolder
     {
-        protected override IEnumerable<ITestFixtureData> Fixtures
+        public static IEnumerable Examples
         {
             get
             {

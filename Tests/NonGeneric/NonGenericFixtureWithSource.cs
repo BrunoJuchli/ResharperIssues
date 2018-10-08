@@ -8,11 +8,11 @@ using Tests.TestUtilities;
 namespace Tests.NonGeneric
 {
     [GenericFixtureSource]
-    public class NonGenericWithFixtureSource
+    public class NonGenericFixtureWithSource
     {
         private readonly string myArgument;
 
-        public NonGenericWithFixtureSource(string argument)
+        public NonGenericFixtureWithSource(string argument)
         {
             myArgument = argument;
         }
@@ -24,7 +24,7 @@ namespace Tests.NonGeneric
         }
     }
 
-    public class NonGenericFixtureSourceAttribute : AbstractTheoryAttribute
+    public class NonGenericFixtureSourceAttribute : CustomFixtureSourceAttribute
     {
         protected override IEnumerable<ITestFixtureData> Fixtures
         {
