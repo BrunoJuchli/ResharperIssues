@@ -20,7 +20,7 @@ namespace Tests.NonGeneric
         [Test]
         public void Foo()
         {
-            Thread.Sleep(3000);
+            Thread.Sleep(150);
         }
     }
 

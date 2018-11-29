@@ -18,7 +18,7 @@ namespace Tests.Generic
         [Test]
         public void Foo()
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(150);
         }
     }
 

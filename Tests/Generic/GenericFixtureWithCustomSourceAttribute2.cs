@@ -5,12 +5,12 @@ using Tests.TestUtilities;
 
 namespace Tests.Generic
 {
-    [GenericFixtureSource]
+    [GenericFixtureSource2]
     public class GenericFixtureWithCustomSourceAttribute2<T>
     {
-        private readonly T myDependency;
+        private readonly Container<T> myDependency;
 
-        public GenericFixtureWithCustomSourceAttribute2(T dependency)
+        public GenericFixtureWithCustomSourceAttribute2(Container<T> dependency)
         {
             this.myDependency = dependency;
         }
@@ -18,7 +18,17 @@ namespace Tests.Generic
         [Test]
         public void Foo()
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(150);
+        }
+    }
+
+    public class Container<T>
+    {
+        public T Value { get; }
+
+        public Container(T value)
+        {
+            Value = value;
         }
     }
 
@@ -33,8 +43,8 @@ namespace Tests.Generic
         {
             get
             {
-                yield return new TypedTestFixture<object>("one");
-                yield return new TypedTestFixture<string>("two");
+                yield return new TypedTestFixture<object>(new Container<object>("one"));
+                yield return new TypedTestFixture<string>(new Container<string>("two"));
             }
         }
     }
